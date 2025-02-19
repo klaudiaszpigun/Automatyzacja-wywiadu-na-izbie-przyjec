@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wywiad medyczny</title>
+    <link rel="stylesheet" href="./css/index.css" />
+    <script src="./js/index.js" defer></script>
+  </head>
+  <body class="body">
+    <header class="header">
+      <h1 class="heading">Wywiad medyczny</h1>
+    </header>
+    <div class="container">
+      <div class="border-container">
+        <h2 class="second-heading">Wypełnij:</h2>
+        <ul class="form">
+          <li class="main-list-item list-item">
+            <label class="gender-label">Wybierz płeć:</label>
+            <ul class="gender-list">
+              <li class="list-item gender-item">
+                <input
+                  type="checkbox"
+                  class="woman gender-checkbox"
+                  value="Kobieta"
+                />Kobieta
+              </li>
+              <li class="list-item gender-item">
+                <input
+                  type="checkbox"
+                  class="man gender-checkbox"
+                  value="Mężczyzna"
+                />Mężczyzna
+              </li>
+            </ul>
+          </li>
+          <li class="main-list-item age-item">
+            <label>Wiek:</label>
+            <input type="text" class="age-text" />
+          </li>
+          <li class="main-list-item">
+            <ul class="list">
+              <label>Pacjent przebywa w:</label>
+              <li class="list-item">
+                <input type="checkbox" />
+                Ośrodku
+              </li>
+              <li class="list-item">
+                <input type="checkbox" />
+                W rodzinie zastępczej
+              </li>
+              <li class="list-item">
+                <input type="checkbox" />
+                Żadne z powyżej wymienionych
+              </li>
+            </ul>
+          </li>
+          <li class="main-list-item">
+            <ul class="list">
+              <label>Czy pacjent był wcześniej hospitalizowany?</label>
+              <li><input type="checkbox" />Tak</li>
+              <li><input type="checkbox" />Nie</li>
+            </ul>
+          </li>
+          <li class="main-list-item">
+            <ul class="list">
+              <label>Czy Pacjent jest pod opieką psychiatry?</label>
+              <li><input type="checkbox" />Tak</li>
+              <li><input type="checkbox" />Nie</li>
+            </ul>
+          </li>
+          <li class="main-list-item">
+            <ul class="list">
+              <label>Czy Pacjent jest pod opieką psychologa?</label>
+              <li><input type="checkbox" />Tak</li>
+              <li><input type="checkbox" />Nie</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="right-container"><input type="text" class="result-text"</div>
+    </div>
+  </body>
+</html>
