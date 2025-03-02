@@ -16,7 +16,7 @@
         <h2 class="second-heading">Wypełnij:</h2>
         <ul class="form">
           <li class="main-list-item list-item">
-            <label class="gender-label">Wybierz płeć:</label>
+            <label class="gender-label question">Wybierz płeć:</label>
             <ul class="gender-list">
               <li class="list-item gender-item">
                 <input
@@ -35,44 +35,48 @@
             </ul>
           </li>
           <li class="main-list-item age-item">
-            <label>Wiek:</label>
+            <label class="question">Wiek:</label>
             <input type="text" class="age-text" />
           </li>
           <li class="main-list-item">
             <ul class="list">
-              <label>Pacjent przebywa w:</label>
+              <label class="question">Pacjent przebywa w:</label>
               <li class="list-item">
-                <input type="checkbox" class="other-forms-of-family" />
-                Ośrodku
+                <input type="checkbox" class="full-family" />
+                Pełnej rodzinie
               </li>
               <li class="list-item">
                 <input type="checkbox" class="other-forms-of-family" />
-                W rodzinie zastępczej
-              </li>
-              <li class="list-item">
-                <input type="checkbox" />
-                Żadne z powyżej wymienionych
+                Ośrodku lub niepełnej rodzinie
               </li>
             </ul>
             <div class="family-input-div"></div>
           </li>
           <li class="main-list-item">
             <ul class="list">
-              <label>Czy pacjent był wcześniej hospitalizowany?</label>
-              <li><input type="checkbox" />Tak</li>
+              <label class="question"
+                >Czy pacjent był wcześniej hospitalizowany?</label
+              >
+              <li><input type="checkbox" class="hospitalized" />Tak</li>
               <li><input type="checkbox" />Nie</li>
+              <div class="hospitalized-from"></div>
+              <div class="hospitalized-to"></div>
             </ul>
           </li>
           <li class="main-list-item">
             <ul class="list">
-              <label>Czy Pacjent jest pod opieką psychiatry?</label>
-              <li><input type="checkbox" />Tak</li>
-              <li><input type="checkbox" />Nie</li>
+              <label class="question"
+                >Czy Pacjent jest pod opieką psychiatry?</label
+              >
+              <li><input type="checkbox" class="hospitalized" />Tak</li>
+              <li><input type="checkbox" class="hospitalized" />Nie</li>
             </ul>
           </li>
           <li class="main-list-item">
             <ul class="list">
-              <label>Czy Pacjent jest pod opieką psychologa?</label>
+              <label class="question"
+                >Czy Pacjent jest pod opieką psychologa?</label
+              >
               <li><input type="checkbox" />Tak</li>
               <li><input type="checkbox" />Nie</li>
             </ul>
