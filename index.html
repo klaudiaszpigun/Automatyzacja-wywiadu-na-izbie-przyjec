@@ -42,11 +42,11 @@
             <ul class="list">
               <label class="question">Pacjent przebywa w:</label>
               <li class="list-item">
-                <input type="checkbox" class="full-family" />
+                <input type="radio" class="full-family" />
                 Pełnej rodzinie
               </li>
               <li class="list-item">
-                <input type="checkbox" class="other-forms-of-family" />
+                <input type="radio" class="other-forms-of-family" />
                 Ośrodku lub niepełnej rodzinie
               </li>
             </ul>
@@ -55,12 +55,25 @@
           <li class="main-list-item">
             <ul class="list">
               <label class="question"
-                >Czy pacjent był wcześniej hospitalizowany?</label
+                >Czy Pacjent był wcześniej hospitalizowany?</label
               >
-              <li><input type="checkbox" class="hospitalized" />Tak</li>
-              <li><input type="checkbox" />Nie</li>
+              <li>
+                <input
+                  value="Tak"
+                  type="radio"
+                  name="hospitalized"
+                  class="hospitalized"
+                />Tak
+              </li>
+              <li>
+                <input
+                  value="Nie"
+                  type="radio"
+                  name="hospitalized"
+                  class="hospitalized input"
+                />Nie
+              </li>
               <div class="hospitalized-from"></div>
-              <div class="hospitalized-to"></div>
             </ul>
           </li>
           <li class="main-list-item">
@@ -68,8 +81,13 @@
               <label class="question"
                 >Czy Pacjent jest pod opieką psychiatry?</label
               >
-              <li><input type="checkbox" class="hospitalized" />Tak</li>
-              <li><input type="checkbox" class="hospitalized" />Nie</li>
+              <li>
+                <input type="radio" class="psychiatrist" value="Tak" />Tak
+              </li>
+              <li>
+                <input type="radio" class="psychiatrist" value="Nie" />Nie
+              </li>
+              <li><div class="psychiatrist-div"></div></li>
             </ul>
           </li>
           <li class="main-list-item">
@@ -77,8 +95,8 @@
               <label class="question"
                 >Czy Pacjent jest pod opieką psychologa?</label
               >
-              <li><input type="checkbox" />Tak</li>
-              <li><input type="checkbox" />Nie</li>
+              <li><input type="radio" />Tak</li>
+              <li><input type="radio" />Nie</li>
             </ul>
           </li>
         </ul>

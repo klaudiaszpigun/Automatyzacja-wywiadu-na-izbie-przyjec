@@ -100,3 +100,52 @@ li {
   color: #d4dcff;
   border-style: solid;
 }
+#hospitalizedLabelOd {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+#hospitalizedLabelDo {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+#hospitalizedInputDo {
+  font-size: 12px;
+  border-width: 0px;
+  border-bottom: 1px;
+  border-color: #2f6bff;
+  background-color: #212121;
+  color: #d4dcff;
+  border-style: solid;
+}
+#hospitalizedInputOd {
+  font-size: 12px;
+  border-width: 0px;
+  border-bottom: 1px;
+  border-color: #2f6bff;
+  background-color: #212121;
+  color: #d4dcff;
+  border-style: solid;
+}
+#questionConsultation {
+  font-weight: 700;
+}
+.hospitalized-from {
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
+}
+#inputConsultation {
+  font-size: 12px;
+  border-width: 0px;
+  border-bottom: 1px;
+  border-color: #2f6bff;
+  background-color: #212121;
+  color: #d4dcff;
+  border-style: solid;
+}
+input {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
