@@ -27,6 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
   let y = "";
   let textArea = [];
 
+  function updateFinalText() {
+    const finalTextArea = document.getElementById("result-text");
+    if (finalTextArea) {
+      finalTextArea.value = textArea
+        .map((entry) => Object.values(entry)[0])
+        .join("\n");
+    } else {
+      console.error("Nie znaleziono textarea!");
+    }
+  }
+
   // dla każdego checkboxa
   genderCheckboxes.forEach((checkbox) => {
     // dodaj nasłuchiwanie eventu zmiany
@@ -245,13 +256,15 @@ document.addEventListener("DOMContentLoaded", function () {
   psychiatristRadios.forEach((radio) => {
     radio.addEventListener("change", () => {
       if (radio.checked && radio.value === "Tak") {
+        // Zapobiegaj wielokrotnemu dodawaniu
+        if (document.getElementById("inputConsultation")) return;
+
         const inputPsyschiatristOd = document.createElement("input");
         inputPsyschiatristOd.type = "text";
         inputPsyschiatristOd.name = "Data";
         inputPsyschiatristOd.placeholder = "Od";
         inputPsyschiatristOd.id = "inputConsultation";
 
-        const reasonLabel = document.createElement("span");
         const reason = document.createElement("input");
         reason.type = "text";
         reason.placeholder = "Z powodu";
@@ -282,13 +295,15 @@ document.addEventListener("DOMContentLoaded", function () {
         noMedicines.className = "medicineRadio";
         noMedicinesLabel.prepend(noMedicines);
 
+        psychiatristDiv.innerHTML = "";
+        medicinesDiv.innerHTML = "";
+
         psychiatristDiv.appendChild(inputPsyschiatristOd);
         psychiatristDiv.appendChild(reason);
         psychiatristDiv.appendChild(diagnosis);
+
         medicinesDiv.appendChild(medicinesLabel);
-
         medicinesDiv.appendChild(medicineLabel);
-
         medicinesDiv.appendChild(noMedicinesLabel);
 
         inputPsyschiatristOd.addEventListener("input", () => {
@@ -298,107 +313,122 @@ document.addEventListener("DOMContentLoaded", function () {
             textArea.push({
               psychiatra: `Pod opieką ambulatoryjną psychiatry jest od ${psychiatristValue},`,
             });
-            reason.addEventListener("input", () => {
-              const reasonValue = reason.value.trim();
-              textArea = textArea.filter((entry) => !entry.powód);
-              if (reasonValue) {
-                textArea.push({
-                  powód: `z powodu ${reasonValue}.`,
-                });
+          }
+          updateFinalText();
+        });
+
+        reason.addEventListener("input", () => {
+          const reasonValue = reason.value.trim();
+          textArea = textArea.filter((entry) => !entry.powód);
+          if (reasonValue) {
+            textArea.push({
+              powód: `z powodu ${reasonValue}.`,
+            });
+          }
+          updateFinalText();
+        });
+
+        diagnosis.addEventListener("input", () => {
+          const diagnosisValue = diagnosis.value.trim();
+          textArea = textArea.filter((entry) => !entry.rozpoznanie);
+          if (diagnosisValue) {
+            textArea.push({
+              rozpoznanie: `Z rozpoznaniem ${diagnosisValue}.`,
+            });
+          }
+          updateFinalText();
+        });
+
+        const handleMedicineChange = (e) => {
+          const val = e.target.value;
+          textArea = textArea.filter((entry) => !entry.leki);
+
+          if (val === "Tak") {
+            const actualMedicines = document.createElement("textarea");
+            actualMedicines.placeholder =
+              "Przyjmowane leki, całym zdaniem wraz z dawkami";
+            actualMedicines.id = "inputConsultation";
+            medicinesDiv.appendChild(actualMedicines);
+
+            actualMedicines.addEventListener("input", () => {
+              const meds = actualMedicines.value.trim();
+              textArea = textArea.filter((entry) => !entry.leki);
+              if (meds) {
+                textArea.push({ leki: meds });
               }
               updateFinalText();
             });
-            diagnosis.addEventListener("input", () => {
-              const diagnosisValue = diagnosis.value.trim();
-              textArea = textArea.filter((entry) => !entry.rozpoznanie);
-              if (diagnosis.value) {
-                textArea.push({
-                  rozpoznanie: `z rozpoznaniem ${diagnosisValue}.`,
-                });
-              }
-              updateFinalText();
-            });
+          } else if (val === "Nie") {
+            textArea.push({ leki: "Nie przyjmuje żadnych leków." });
             updateFinalText();
           }
+        };
+
+        document.querySelectorAll(".medicineRadio").forEach((radio) => {
+          radio.addEventListener("change", handleMedicineChange);
+        });
+      }
+
+      // Jeśli wybrano "Nie"
+      else if (radio.checked && radio.value === "Nie") {
+        textArea = textArea.filter(
+          (entry) =>
+            !entry.psychiatra &&
+            !entry.powód &&
+            !entry.rozpoznanie &&
+            !entry.leki
+        );
+        textArea.push({
+          psychiatra: "Bez ambulatoryjnej opieki psychiatry.",
         });
 
-        const medicineRadios = document.querySelectorAll(".medicineRadio");
-
-        medicineRadios.forEach((radio) => {
-          radio.addEventListener("change", () => {
-            if (radio.checked && radio.value === "Tak") {
-              const actualMedicines = document.createElement("textarea");
-              actualMedicines.placeholder =
-                "Przyjmowane leki, całym zdaniem wraz z dawkami";
-              actualMedicines.id = "inputConsultation";
-              medicinesDiv.appendChild(actualMedicines);
-              updateFinalText();
-              actualMedicines.addEventListener("input", () => {
-                const actualMedicinesValue = actualMedicines.value.trim();
-                textArea = textArea.filter((entry) => !entry.leki);
-                if (actualMedicines.value) {
-                  textArea.push({
-                    leki: `${actualMedicinesValue}`,
-                  });
-                  updateFinalText();
-                }
-              });
-            }
-            if (radio.checked && radio.value === "Nie") {
-              textArea = textArea.filter((entry) => !entry.leki);
-              textArea.push({
-                leki: "Nie przyjmuje żadnych leków.",
-              });
-              updateFinalText();
-            }
-          });
-        });
-      } else {
-        textArea = textArea.filter((entry) => !entry.psychiatra);
         updateFinalText();
       }
     });
-
-    psychologist.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        // Sprawdź, czy istnieje input i usuń go, jeśli jest
-        const existingInput = document.getElementById("psychologistSince");
-        if (existingInput) {
-          existingInput.remove();
-        }
-
-        // Jeśli wybrano "Tak", dodaj input
-        if (radio.checked && radio.value === "Tak") {
-          const psychologistSince = document.createElement("input");
-          psychologistSince.type = "text";
-          psychologistSince.id = "psychologistSince"; // unikaj powtarzania id!
-          psychologistSince.placeholder = "Od kiedy";
-          psychologistDiv.appendChild(psychologistSince);
-        }
-      });
-    });
   });
 
-  function removeHospitalizedInputs() {
-    const inputOd = document.getElementById("hospitalizedInputOd");
-    const labelOd = document.getElementById("hospitalizedLabelOd");
-    const inputDo = document.getElementById("hospitalizedInputDo");
-    const labelDo = document.getElementById("hospitalizedLabelDo");
+  psychologist.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      // Sprawdź, czy istnieje input i usuń go, jeśli jest
+      const existingInput = document.getElementById("psychologistSince");
+      if (existingInput) {
+        existingInput.remove();
+      }
 
-    if (inputOd) hospitalizedFrom.removeChild(inputOd);
-    if (labelOd) hospitalizedFrom.removeChild(labelOd);
-    if (inputDo) hospitalizedFrom.removeChild(inputDo);
-    if (labelDo) hospitalizedFrom.removeChild(labelDo);
-  }
+      // Jeśli wybrano "Tak", dodaj input
+      if (radio.checked && radio.value === "Tak") {
+        const psychologistSince = document.createElement("input");
+        psychologistSince.type = "text";
+        psychologistSince.id = "psychologistSince"; // unikaj powtarzania id!
+        psychologistSince.placeholder = "Od kiedy";
 
-  function updateFinalText() {
-    const finalTextArea = document.getElementById("result-text");
-    if (finalTextArea) {
-      finalTextArea.value = textArea
-        .map((entry) => Object.values(entry)[0])
-        .join("\n");
-    } else {
-      console.error("Nie znaleziono textarea!");
-    }
-  }
+        psychologistSince.addEventListener("input", () => {
+          const psychologistDate = psychologistSince.value.trim();
+
+          // za każdym razem czyścimy poprzedni wpis, żeby nie dublować
+          textArea = textArea.filter((entry) => !entry.psycholog);
+
+          if (psychologistDate) {
+            textArea.push({
+              psycholog: `Pod opieką ambulatoryjną psychologa jest od: ${psychologistDate}`,
+            });
+          }
+
+          updateFinalText();
+        });
+      }
+    });
+  });
 });
+
+function removeHospitalizedInputs() {
+  const inputOd = document.getElementById("hospitalizedInputOd");
+  const labelOd = document.getElementById("hospitalizedLabelOd");
+  const inputDo = document.getElementById("hospitalizedInputDo");
+  const labelDo = document.getElementById("hospitalizedLabelDo");
+
+  if (inputOd) hospitalizedFrom.removeChild(inputOd);
+  if (labelOd) hospitalizedFrom.removeChild(labelOd);
+  if (inputDo) hospitalizedFrom.removeChild(inputDo);
+  if (labelDo) hospitalizedFrom.removeChild(labelDo);
+}

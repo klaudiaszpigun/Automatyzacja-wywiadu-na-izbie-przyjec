@@ -162,3 +162,7 @@ input {
   color: #d4dcff;
   border-style: solid;
 }
+.psychiatrist-div {
+  display: flex;
+  flex-direction: column;
+}
