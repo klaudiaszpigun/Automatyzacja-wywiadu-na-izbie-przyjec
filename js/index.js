@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const hospitalized = document.querySelectorAll(".hospitalized");
   const psychiatristRadios = document.querySelectorAll(".psychiatrist");
   const psychiatristDiv = document.querySelector(".psychiatrist-div");
+  const medicinesDiv = document.querySelector(".medicines-div");
+  const psychologistDiv = document.querySelector(".psychologist-div");
+  const psychologist = document.querySelectorAll(".psychologist");
   // zaimki
   let pronoun = "";
   let ka = "";
@@ -245,28 +248,55 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputPsyschiatristOd = document.createElement("input");
         inputPsyschiatristOd.type = "text";
         inputPsyschiatristOd.name = "Data";
-        inputPsyschiatristOd.placeholder = "Od dnia";
+        inputPsyschiatristOd.placeholder = "Od";
         inputPsyschiatristOd.id = "inputConsultation";
+
         const reasonLabel = document.createElement("span");
         const reason = document.createElement("input");
         reason.type = "text";
         reason.placeholder = "Z powodu";
         reason.id = "inputConsultation";
+
         const diagnosis = document.createElement("input");
         diagnosis.type = "text";
         diagnosis.placeholder = "Z rozpoznaniem";
         diagnosis.id = "inputConsultation";
 
+        const medicinesLabel = document.createElement("label");
+        medicinesLabel.textContent = "Czy Pacjent przyjmuje leki?";
+        medicinesLabel.id = "questionConsultation";
+
+        const medicineLabel = document.createElement("label");
+        medicineLabel.textContent = "Tak";
+        const medicines = document.createElement("input");
+        medicines.type = "radio";
+        medicines.value = "Tak";
+        medicines.className = "medicineRadio";
+        medicineLabel.prepend(medicines);
+
+        const noMedicinesLabel = document.createElement("label");
+        noMedicinesLabel.textContent = "Nie";
+        const noMedicines = document.createElement("input");
+        noMedicines.type = "radio";
+        noMedicines.value = "Nie";
+        noMedicines.className = "medicineRadio";
+        noMedicinesLabel.prepend(noMedicines);
+
         psychiatristDiv.appendChild(inputPsyschiatristOd);
         psychiatristDiv.appendChild(reason);
         psychiatristDiv.appendChild(diagnosis);
+        medicinesDiv.appendChild(medicinesLabel);
+
+        medicinesDiv.appendChild(medicineLabel);
+
+        medicinesDiv.appendChild(noMedicinesLabel);
 
         inputPsyschiatristOd.addEventListener("input", () => {
           const psychiatristValue = inputPsyschiatristOd.value.trim();
           textArea = textArea.filter((entry) => !entry.psychiatra);
           if (psychiatristValue) {
             textArea.push({
-              psychiatra: `Pod opieką ambulatoryjną psychiatry jest od dnia ${psychiatristValue},`,
+              psychiatra: `Pod opieką ambulatoryjną psychiatry jest od ${psychiatristValue},`,
             });
             reason.addEventListener("input", () => {
               const reasonValue = reason.value.trim();
@@ -278,13 +308,74 @@ document.addEventListener("DOMContentLoaded", function () {
               }
               updateFinalText();
             });
+            diagnosis.addEventListener("input", () => {
+              const diagnosisValue = diagnosis.value.trim();
+              textArea = textArea.filter((entry) => !entry.rozpoznanie);
+              if (diagnosis.value) {
+                textArea.push({
+                  rozpoznanie: `z rozpoznaniem ${diagnosisValue}.`,
+                });
+              }
+              updateFinalText();
+            });
             updateFinalText();
           }
+        });
+
+        const medicineRadios = document.querySelectorAll(".medicineRadio");
+
+        medicineRadios.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            if (radio.checked && radio.value === "Tak") {
+              const actualMedicines = document.createElement("textarea");
+              actualMedicines.placeholder =
+                "Przyjmowane leki, całym zdaniem wraz z dawkami";
+              actualMedicines.id = "inputConsultation";
+              medicinesDiv.appendChild(actualMedicines);
+              updateFinalText();
+              actualMedicines.addEventListener("input", () => {
+                const actualMedicinesValue = actualMedicines.value.trim();
+                textArea = textArea.filter((entry) => !entry.leki);
+                if (actualMedicines.value) {
+                  textArea.push({
+                    leki: `${actualMedicinesValue}`,
+                  });
+                  updateFinalText();
+                }
+              });
+            }
+            if (radio.checked && radio.value === "Nie") {
+              textArea = textArea.filter((entry) => !entry.leki);
+              textArea.push({
+                leki: "Nie przyjmuje żadnych leków.",
+              });
+              updateFinalText();
+            }
+          });
         });
       } else {
         textArea = textArea.filter((entry) => !entry.psychiatra);
         updateFinalText();
       }
+    });
+
+    psychologist.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        // Sprawdź, czy istnieje input i usuń go, jeśli jest
+        const existingInput = document.getElementById("psychologistSince");
+        if (existingInput) {
+          existingInput.remove();
+        }
+
+        // Jeśli wybrano "Tak", dodaj input
+        if (radio.checked && radio.value === "Tak") {
+          const psychologistSince = document.createElement("input");
+          psychologistSince.type = "text";
+          psychologistSince.id = "psychologistSince"; // unikaj powtarzania id!
+          psychologistSince.placeholder = "Od kiedy";
+          psychologistDiv.appendChild(psychologistSince);
+        }
+      });
     });
   });
 
@@ -311,5 +402,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
-
-// Pomocnicza funkcja usuwająca pola "Od" i "Do"
