@@ -397,25 +397,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Jeśli wybrano "Tak", dodaj input
       if (radio.checked && radio.value === "Tak") {
-        const psychologistSince = document.createElement("input");
-        psychologistSince.type = "text";
-        psychologistSince.id = "psychologistSince"; // unikaj powtarzania id!
-        psychologistSince.placeholder = "Od kiedy";
-
-        psychologistSince.addEventListener("input", () => {
-          const psychologistDate = psychologistSince.value.trim();
-
-          // za każdym razem czyścimy poprzedni wpis, żeby nie dublować
-          textArea = textArea.filter((entry) => !entry.psycholog);
-
-          if (psychologistDate) {
-            textArea.push({
-              psycholog: `Pod opieką ambulatoryjną psychologa jest od: ${psychologistDate}`,
-            });
-          }
-
-          updateFinalText();
+        textArea.push({
+          psycholog: "Korzysta z pomocy psychologa.",
         });
+        updateFinalText();
+      }
+      if (radio.checked && radio.value === "Nie") {
+        textArea.push({
+          psycholog: "Bez ambulatoryjnej opieki psychologa.",
+        });
+        updateFinalText();
       }
     });
   });
